@@ -74,8 +74,8 @@ void ATA_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATA_CharacterBase::MoveRight);
 }
 
-void ATA_CharacterBase::AttachWeaponToPlayer(ATA_WeaponBase* Weapon)
+void ATA_CharacterBase::AttachWeapon(ATA_WeaponBase* Weapon)
 {
-	
+
 }
 

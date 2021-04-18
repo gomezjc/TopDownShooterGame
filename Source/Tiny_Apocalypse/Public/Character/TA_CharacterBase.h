@@ -45,5 +45,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	class ATA_WeaponBase* GetSelectedWeapon() { return WeaponSelected; }
 	
-	void AttachWeaponToPlayer(class ATA_WeaponBase* Weapon);
+	virtual void AttachWeapon(class ATA_WeaponBase* Weapon);
 };

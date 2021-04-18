@@ -36,21 +36,11 @@ void ATA_WeaponBase::BeginPlay()
 void ATA_WeaponBase::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(IsPlayer(OtherActor))
-	{
-		bCanPickUp = true;
-		UE_LOG(LogTemp, Warning, TEXT("Entro"))
-	}
 }
 
 void ATA_WeaponBase::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (IsPlayer(OtherActor))
-	{
-		bCanPickUp = false;
-		UE_LOG(LogTemp, Warning, TEXT("Salio"))
-	}
+{	
 }
 
 bool ATA_WeaponBase::IsPlayer(AActor* OtherActor)
@@ -61,5 +51,9 @@ bool ATA_WeaponBase::IsPlayer(AActor* OtherActor)
 		return IsValid(OverlapCharacter);
 	}
 	return false;
+}
+
+void ATA_WeaponBase::PickUpWeapon()
+{
 }
 

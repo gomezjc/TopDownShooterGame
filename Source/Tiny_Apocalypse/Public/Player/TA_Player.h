@@ -14,6 +14,10 @@ class TINY_APOCALYPSE_API ATA_Player : public ATA_CharacterBase
 {
 	GENERATED_BODY()
 
+public:
+	ATA_Player();
+	
+protected:
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* SpringArmComponent;
@@ -23,6 +27,5 @@ class TINY_APOCALYPSE_API ATA_Player : public ATA_CharacterBase
 	class UCameraComponent* CameraComponent;
 
 public:
-	ATA_Player();
-	
+	virtual void AttachWeapon(ATA_WeaponBase* Weapon) override;
 };

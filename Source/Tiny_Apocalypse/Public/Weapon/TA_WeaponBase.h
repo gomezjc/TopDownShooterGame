@@ -12,7 +12,6 @@ enum class ETA_WeaponType : uint8
 	WeaponType_None    UMETA(DisplayName = "None"),
 	WeaponType_Melee   UMETA(DisplayName = "Melee"),
 	WeaponType_Pistol  UMETA(DisplayName = "Pistol"),
-	WeaponType_Machine UMETA(DisplayName = "Machine"),
 	WeaponType_Rocket  UMETA(DisplayName = "Rocket")
 };
 UCLASS()
@@ -23,39 +22,46 @@ class TINY_APOCALYPSE_API ATA_WeaponBase : public AActor
 public:
 	// Sets default values for this actor's properties
 	ATA_WeaponBase();
-	
+
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Melee")
+	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	ETA_WeaponType WeaponType;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Weapon Melee")
-    bool bCanPickUp;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Weapon Melee")
+
+	UPROPERTY(VisibleAnywhere, Category = "Weapon")
+	bool bCanPickUp;
+
+	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	class USceneComponent* CustomRootComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Melee")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 	class UBoxComponent* WeaponCollider;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon Melee")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 	class UStaticMeshComponent* MeshComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	TSubclassOf<class ATA_WeaponBase> WeaponClass;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void OnPlayerBeginOverlap(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnPlayerBeginOverlap(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void OnPlayerEndOverlap(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	virtual void OnPlayerEndOverlap(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	bool IsPlayer(AActor* OtherActor);
 
 public:
 	virtual void PickUpWeapon();
 
+	UFUNCTION(BlueprintCallable, Category="Weapon")
 	ETA_WeaponType GetWeaponType() { return WeaponType; }
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	TSubclassOf<ATA_WeaponBase> GetWeaponClass() { return WeaponClass; }
 
 };

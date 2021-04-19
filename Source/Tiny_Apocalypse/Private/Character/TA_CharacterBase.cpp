@@ -76,6 +76,6 @@ void ATA_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ATA_CharacterBase::AttachWeapon(ATA_WeaponBase* Weapon)
 {
-
+	
 }
 

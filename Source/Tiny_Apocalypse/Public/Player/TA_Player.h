@@ -26,6 +26,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* CameraComponent;
 
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+	void StartAction();
+
+	void StopAction();
+
 public:
 	virtual void AttachWeapon(ATA_WeaponBase* Weapon) override;
 };

@@ -43,6 +43,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	TSubclassOf<class ATA_WeaponBase> WeaponClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	class UStaticMesh* WeaponMesh;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -64,4 +67,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	TSubclassOf<ATA_WeaponBase> GetWeaponClass() { return WeaponClass; }
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UStaticMesh* GetWeaponMesh() { return WeaponMesh; }
 };

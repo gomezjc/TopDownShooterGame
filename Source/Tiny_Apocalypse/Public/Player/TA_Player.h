@@ -16,16 +16,23 @@ class TINY_APOCALYPSE_API ATA_Player : public ATA_CharacterBase
 
 public:
 	ATA_Player();
-	
+
 protected:
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* SpringArmComponent;
+		class USpringArmComponent* SpringArmComponent;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* CameraComponent;
+		class UCameraComponent* CameraComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
+	float NormalWalkSpeed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
+	float FightingWalkSpeed;
+	
+protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	void StartAction();

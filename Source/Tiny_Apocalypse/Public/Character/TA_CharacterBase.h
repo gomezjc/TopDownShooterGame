@@ -21,6 +21,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 	class UStaticMeshComponent* WeaponRight;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attack")
+	bool bIsAttacking;
 	
 protected:
 	// Called when the game starts or when spawned

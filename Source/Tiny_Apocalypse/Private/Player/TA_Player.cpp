@@ -3,6 +3,7 @@
 
 #include "Player/TA_Player.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapon/TA_WeaponBase.h"
 
@@ -18,6 +19,8 @@ ATA_Player::ATA_Player()
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	CameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	NormalWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	FightingWalkSpeed = NormalWalkSpeed / 2;
 }
 
 void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -30,11 +33,13 @@ void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void ATA_Player::StartAction()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
+	bIsAttacking = true;
 }
 
 void ATA_Player::StopAction()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Stop"));
+	bIsAttacking = false;
 }
 
 void ATA_Player::AttachWeapon(ATA_WeaponBase* Weapon)

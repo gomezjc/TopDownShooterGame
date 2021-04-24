@@ -30,9 +30,6 @@ protected:
 	ETA_WeaponType WeaponType;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
-	bool bCanPickUp;
-
-	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	class USceneComponent* CustomRootComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
@@ -44,8 +41,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	TSubclassOf<class ATA_WeaponBase> WeaponClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	class UStaticMesh* WeaponMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Weapon|Range")
+	class UArrowComponent* MuzzleComponent;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -60,7 +57,6 @@ protected:
 	bool IsPlayer(AActor* OtherActor);
 
 public:
-	virtual void PickUpWeapon();
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	ETA_WeaponType GetWeaponType() { return WeaponType; }
@@ -68,6 +64,4 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	TSubclassOf<ATA_WeaponBase> GetWeaponClass() { return WeaponClass; }
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	UStaticMesh* GetWeaponMesh() { return WeaponMesh; }
 };

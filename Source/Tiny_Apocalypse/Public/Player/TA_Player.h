@@ -20,11 +20,11 @@ public:
 protected:
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* SpringArmComponent;
+	class USpringArmComponent* SpringArmComponent;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* CameraComponent;
+	class UCameraComponent* CameraComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
 	float NormalWalkSpeed;
@@ -40,5 +40,4 @@ protected:
 	void StopAction();
 
 public:
-	virtual void AttachWeapon(ATA_WeaponBase* Weapon) override;
 };

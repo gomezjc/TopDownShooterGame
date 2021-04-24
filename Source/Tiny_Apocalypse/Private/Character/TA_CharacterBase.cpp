@@ -3,6 +3,7 @@
 
 #include "Character/TA_CharacterBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Weapon/TA_WeaponBase.h"
 
 // Sets default values
 ATA_CharacterBase::ATA_CharacterBase()
@@ -10,8 +11,7 @@ ATA_CharacterBase::ATA_CharacterBase()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	WeaponRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon_R"));
-	WeaponRight->SetupAttachment(GetMesh(), "HandSocket_R");
+	SocketWeapon = "HandSocket_R";
 	
 	BaseTurnRate = 45.f;
 	// Don't rotate when the controller rotates. Let that just affect the camera.
@@ -76,8 +76,25 @@ void ATA_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATA_CharacterBase::MoveRight);
 }
 
-void ATA_CharacterBase::AttachWeapon(ATA_WeaponBase* Weapon)
+void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
 {
-	
+	if (WeaponSelected)
+	{
+		UnEquipWeapon();
+	}
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponBase>(WeaponClass, Params);
+	WeaponSelected->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketWeapon);
+}
+
+void ATA_CharacterBase::UnEquipWeapon()
+{
+	if (WeaponSelected)
+	{
+		WeaponSelected->Destroy();
+	}
 }
 

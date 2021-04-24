@@ -8,14 +8,6 @@ ATA_WeaponRange::ATA_WeaponRange()
 	WeaponType = ETA_WeaponType::WeaponType_Pistol;
 }
 
-void ATA_WeaponRange::PickUpWeapon()
-{
-	if (bCanPickUp)
-	{
-
-	}
-}
-
 void ATA_WeaponRange::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {

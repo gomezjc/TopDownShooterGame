@@ -5,7 +5,6 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Weapon/TA_WeaponBase.h"
 
 ATA_Player::ATA_Player()
 {
@@ -40,14 +39,5 @@ void ATA_Player::StopAction()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Stop"));
 	bIsAttacking = false;
-}
-
-void ATA_Player::AttachWeapon(ATA_WeaponBase* Weapon)
-{
-	if (IsValid(Weapon))
-	{
-		WeaponSelected = Weapon;
-		WeaponRight->SetStaticMesh(Weapon->GetWeaponMesh());
-	}
 }
 

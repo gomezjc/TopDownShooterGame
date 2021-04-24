@@ -2,6 +2,7 @@
 
 
 #include "Weapon/TA_WeaponBase.h"
+#include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Player/TA_Player.h"
 
@@ -15,6 +16,10 @@ ATA_WeaponBase::ATA_WeaponBase()
 
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(CustomRootComponent);
+
+	MuzzleComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzleComponent"));
+	MuzzleComponent->ArrowLength = 20.0f;
+	MuzzleComponent->SetupAttachment(CustomRootComponent);
 
 	WeaponCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponCollider"));
 	WeaponCollider->SetupAttachment(CustomRootComponent);
@@ -36,12 +41,7 @@ void ATA_WeaponBase::BeginPlay()
 void ATA_WeaponBase::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (IsPlayer(OtherActor))
-	{
-		ATA_Player* Player = Cast<ATA_Player>(OtherActor);
-		bCanPickUp = true;
-		Player->AttachWeapon(this);
-	}
+	
 }
 
 void ATA_WeaponBase::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -59,7 +59,4 @@ bool ATA_WeaponBase::IsPlayer(AActor* OtherActor)
 	return false;
 }
 
-void ATA_WeaponBase::PickUpWeapon()
-{
-}
 

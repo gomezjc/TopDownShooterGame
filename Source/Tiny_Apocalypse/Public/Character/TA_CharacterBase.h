@@ -17,7 +17,7 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
-	class ATA_WeaponRangeBase* WeaponSelected;
+	class ATA_WeaponBase* WeaponSelected;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attack")
 	bool bIsAttacking;
@@ -45,10 +45,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
-	class ATA_WeaponRangeBase* GetSelectedWeapon() { return WeaponSelected; }
+	class ATA_WeaponBase* GetSelectedWeapon() { return WeaponSelected; }
 
 	UFUNCTION(BlueprintCallable, Category="Weapon Equip")
-	void EquipWeapon(TSubclassOf<ATA_WeaponRangeBase> WeaponClass);
+	void EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass);
 	
 	void UnEquipWeapon();
 };

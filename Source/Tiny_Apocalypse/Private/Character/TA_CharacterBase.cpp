@@ -76,7 +76,7 @@ void ATA_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATA_CharacterBase::MoveRight);
 }
 
-void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponRangeBase> WeaponClass)
+void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
 {
 	if (WeaponSelected)
 	{
@@ -86,7 +86,7 @@ void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponRangeBase> WeaponClass
 	FActorSpawnParameters Params;
 	Params.Owner = this;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponRangeBase>(WeaponClass, Params);
+	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponBase>(WeaponClass, Params);
 	//WeaponSelected->SetCharacterOwner(this);
 	WeaponSelected->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketWeapon);
 }

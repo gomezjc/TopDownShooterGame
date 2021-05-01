@@ -27,7 +27,7 @@ protected:
 	class UCameraComponent* CameraComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
-	float NormalWalkSpeed;
+	float DefaultWalkSpeed;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
 	float FightingWalkSpeed;

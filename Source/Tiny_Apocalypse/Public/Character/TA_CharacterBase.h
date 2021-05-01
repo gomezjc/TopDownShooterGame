@@ -6,8 +6,6 @@
 #include "GameFramework/Character.h"
 #include "TA_CharacterBase.generated.h"
 
-class ATA_WeaponBase;
-
 UCLASS()
 class TINY_APOCALYPSE_API ATA_CharacterBase : public ACharacter
 {
@@ -19,7 +17,7 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
-	ATA_WeaponBase* WeaponSelected;
+	class ATA_WeaponRangeBase* WeaponSelected;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attack")
 	bool bIsAttacking;
@@ -47,10 +45,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
-	ATA_WeaponBase* GetSelectedWeapon() { return WeaponSelected; }
+	class ATA_WeaponRangeBase* GetSelectedWeapon() { return WeaponSelected; }
 
 	UFUNCTION(BlueprintCallable, Category="Weapon Equip")
-	void EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass);
+	void EquipWeapon(TSubclassOf<ATA_WeaponRangeBase> WeaponClass);
 	
 	void UnEquipWeapon();
 };

@@ -4,29 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "TA_WeaponBase.generated.h"
+#include "Utils/Enums/ETA_WeaponType.h"
+#include "TA_WeaponRangeBase.generated.h"
 
-UENUM(Blueprintable)
-enum class ETA_WeaponType : uint8
-{
-	WeaponType_None    UMETA(DisplayName = "None"),
-	WeaponType_Melee   UMETA(DisplayName = "Melee"),
-	WeaponType_Pistol  UMETA(DisplayName = "Pistol"),
-	WeaponType_Weapon  UMETA(DisplayName = "Weapon"),
-	WeaponType_Rocket  UMETA(DisplayName = "Rocket")
-};
 UCLASS()
-class TINY_APOCALYPSE_API ATA_WeaponBase : public AActor
+class TINY_APOCALYPSE_API ATA_WeaponRangeBase : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ATA_WeaponBase();
+	ATA_WeaponRangeBase();
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon")
+	UPROPERTY(EditAnywhere, Category = "Weapon")
 	ETA_WeaponType WeaponType;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
@@ -39,7 +31,7 @@ protected:
 	class UStaticMeshComponent* MeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	TSubclassOf<class ATA_WeaponBase> WeaponClass;
+	TSubclassOf<class ATA_WeaponRangeBase> WeaponClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Weapon|Range")
 	class UArrowComponent* MuzzleComponent;
@@ -62,6 +54,6 @@ public:
 	ETA_WeaponType GetWeaponType() { return WeaponType; }
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	TSubclassOf<ATA_WeaponBase> GetWeaponClass() { return WeaponClass; }
+	TSubclassOf<ATA_WeaponRangeBase> GetWeaponClass() { return WeaponClass; }
 
 };

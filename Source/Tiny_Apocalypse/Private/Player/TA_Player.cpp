@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapon/TA_WeaponRangeBase.h"
 
 ATA_Player::ATA_Player()
 {
@@ -18,8 +19,8 @@ ATA_Player::ATA_Player()
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	CameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	NormalWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	FightingWalkSpeed = NormalWalkSpeed / 2;
+	DefaultWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	FightingWalkSpeed = DefaultWalkSpeed / 2;
 }
 
 void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -31,13 +32,23 @@ void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void ATA_Player::StartAction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
-	bIsAttacking = true;
+	if(WeaponSelected)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Shooting"));
+		bIsAttacking = true;
+		GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
+		//WeaponSelected->StartAction();
+	}
 }
 
 void ATA_Player::StopAction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stop"));
-	bIsAttacking = false;
+	if (WeaponSelected)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Stop"));
+		bIsAttacking = false;
+		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+		//WeaponSelected->StopAction();
+	}
 }
 

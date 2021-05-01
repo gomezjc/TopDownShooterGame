@@ -3,7 +3,7 @@
 
 #include "Character/TA_CharacterBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Weapon/TA_WeaponBase.h"
+#include "Weapon/TA_WeaponRangeBase.h"
 
 // Sets default values
 ATA_CharacterBase::ATA_CharacterBase()
@@ -76,7 +76,7 @@ void ATA_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATA_CharacterBase::MoveRight);
 }
 
-void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
+void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponRangeBase> WeaponClass)
 {
 	if (WeaponSelected)
 	{
@@ -86,7 +86,8 @@ void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
 	FActorSpawnParameters Params;
 	Params.Owner = this;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponBase>(WeaponClass, Params);
+	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponRangeBase>(WeaponClass, Params);
+	//WeaponSelected->SetCharacterOwner(this);
 	WeaponSelected->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketWeapon);
 }
 

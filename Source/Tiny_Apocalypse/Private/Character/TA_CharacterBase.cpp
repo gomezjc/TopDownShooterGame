@@ -61,11 +61,12 @@ void ATA_CharacterBase::MoveRight(float Value)
 	}
 }
 
-
-// Called every frame
-void ATA_CharacterBase::Tick(float DeltaTime)
+void ATA_CharacterBase::StartWeaponAction()
 {
-	Super::Tick(DeltaTime);
+	if (WeaponSelected && bIsAttacking)
+	{
+		WeaponSelected->StartWeaponAction();
+	}
 }
 
 // Called to bind functionality to input
@@ -87,7 +88,6 @@ void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
 	Params.Owner = this;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponBase>(WeaponClass, Params);
-	//WeaponSelected->SetCharacterOwner(this);
 	WeaponSelected->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketWeapon);
 }
 

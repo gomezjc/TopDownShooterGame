@@ -23,6 +23,10 @@ protected:
 	bool bIsAttacking;
 
 	FName SocketWeapon;
+
+	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	float BaseTurnRate;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -31,16 +35,11 @@ protected:
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
-
+	
 public:
-	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-	float BaseTurnRate;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	virtual void StartWeaponAction();
+	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

@@ -18,7 +18,13 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon|Range")
 	class UArrowComponent* MuzzleComponent;
-	
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon|Range")
+	class TSubclassOf<class ATA_BulletBase> BulletClass;
+
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void StartWeaponAction() override;
 };

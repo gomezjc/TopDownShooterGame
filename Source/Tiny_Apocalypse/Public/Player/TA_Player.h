@@ -33,11 +33,12 @@ protected:
 	float FightingWalkSpeed;
 	
 protected:
+	
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	
+public:
 
 	void StartAction();
 
 	void StopAction();
-
-public:
 };

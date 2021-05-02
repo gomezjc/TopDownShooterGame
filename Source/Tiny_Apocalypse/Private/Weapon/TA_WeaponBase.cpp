@@ -36,3 +36,8 @@ bool ATA_WeaponBase::IsPlayer(AActor* OtherActor)
 	}
 	return false;
 }
+
+void ATA_WeaponBase::StartWeaponAction()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Start Weapon Action"));
+}

@@ -38,6 +38,8 @@ protected:
 
 public:
 
+	virtual void StartWeaponAction();
+
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	ETA_WeaponType GetWeaponType() { return WeaponType; }
 

@@ -34,10 +34,9 @@ void ATA_Player::StartAction()
 {
 	if(WeaponSelected)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Shooting"));
+		UE_LOG(LogTemp, Warning, TEXT("Start Attacking 2"));
 		bIsAttacking = true;
 		GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
-		//WeaponSelected->StartAction();
 	}
 }
 
@@ -45,10 +44,9 @@ void ATA_Player::StopAction()
 {
 	if (WeaponSelected)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Stop"));
+		UE_LOG(LogTemp, Warning, TEXT("Stop Attacking 2"));
 		bIsAttacking = false;
 		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
-		//WeaponSelected->StopAction();
 	}
 }
 

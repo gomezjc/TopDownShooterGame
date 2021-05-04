@@ -40,6 +40,8 @@ public:
 
 	virtual void StartWeaponAction();
 
+	virtual void StopWeaponAction();
+
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	ETA_WeaponType GetWeaponType() { return WeaponType; }
 

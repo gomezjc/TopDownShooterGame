@@ -32,6 +32,7 @@ ATA_BulletBase::ATA_BulletBase()
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovementComponent->InitialSpeed = 3000.0f;
 	ProjectileMovementComponent->Velocity = FVector::ForwardVector;
+	ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
 }
 
 // Called when the game starts or when spawned

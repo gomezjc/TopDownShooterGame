@@ -9,9 +9,6 @@
 // Sets default values
 ATA_WeaponBase::ATA_WeaponBase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	CustomRootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("CustomRootcomponent"));
@@ -39,5 +36,10 @@ bool ATA_WeaponBase::IsPlayer(AActor* OtherActor)
 
 void ATA_WeaponBase::StartWeaponAction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Start Weapon Action"));
+	UE_LOG(LogTemp, Warning, TEXT("Start Weapon Action 1"));
+}
+
+void ATA_WeaponBase::StopWeaponAction()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Stop Weapon Action 1"));
 }

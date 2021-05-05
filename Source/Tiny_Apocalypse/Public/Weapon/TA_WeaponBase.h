@@ -42,6 +42,12 @@ public:
 
 	virtual void StopWeaponAction();
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_StartWeaponAction();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_StopWeaponAction();
+
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	ETA_WeaponType GetWeaponType() { return WeaponType; }
 

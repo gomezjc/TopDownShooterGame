@@ -36,6 +36,9 @@ protected:
 	
 	virtual void StopWeaponAction() override;
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_FireRound();
+
 private:
 	bool bCanShoot;
 	void FireRound();

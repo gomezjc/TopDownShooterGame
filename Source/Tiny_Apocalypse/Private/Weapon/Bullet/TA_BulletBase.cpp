@@ -12,7 +12,7 @@ ATA_BulletBase::ATA_BulletBase()
 	PrimaryActorTick.bCanEverTick = false;
 	HitSphere = CreateDefaultSubobject<USphereComponent>(TEXT("HitSphere"));
 	SetRootComponent(HitSphere);
-	HitSphere->InitSphereRadius(12.0f);
+	HitSphere->InitSphereRadius(8.0f);
 	HitSphere->SetNotifyRigidBodyCollision(true);
 	HitSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	HitSphere->SetNotifyRigidBodyCollision(true);

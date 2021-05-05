@@ -50,5 +50,6 @@ void ATA_WeaponRangeBase::FireRound()
 	Params.Owner = BulletOwner;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	GetWorld()->SpawnActor<ATA_BulletBase>(BulletClass, SpawnTransform, Params);
+	BP_FireRound();
 }
 

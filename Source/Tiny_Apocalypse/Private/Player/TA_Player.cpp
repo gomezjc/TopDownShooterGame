@@ -23,6 +23,16 @@ ATA_Player::ATA_Player()
 	FightingWalkSpeed = DefaultWalkSpeed / 2;
 }
 
+void ATA_Player::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (IsValid(GetMesh()))
+	{
+		AnimInstance = GetMesh()->GetAnimInstance();
+	}
+}
+
 void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -30,11 +40,15 @@ void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAction("ActionWeapon", IE_Released, this, &ATA_Player::StopAction);
 }
 
+void ATA_Player::OnWeaponAction()
+{
+	SetAnimateRangeWeapon(true);
+}
+
 void ATA_Player::StartAction()
 {
 	if(WeaponSelected)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Start Attacking 1"));
 		bIsAttacking = true;
 		GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
 		WeaponSelected->StartWeaponAction();
@@ -45,10 +59,14 @@ void ATA_Player::StopAction()
 {
 	if (WeaponSelected)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Stop Attacking 1"));
 		bIsAttacking = false;
 		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 		WeaponSelected->StopWeaponAction();
+		SetAnimateRangeWeapon(false);
 	}
 }
 
+void ATA_Player::SetAnimateRangeWeapon(bool Value)
+{
+	bAnimateRangeWeapon = Value;
+}

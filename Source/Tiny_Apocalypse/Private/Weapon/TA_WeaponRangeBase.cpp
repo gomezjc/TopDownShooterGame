@@ -2,6 +2,7 @@
 
 #include "Weapon/TA_WeaponRangeBase.h"
 #include "Components/ArrowComponent.h"
+#include "Player/TA_Player.h"
 #include "Weapon/Bullet/TA_BulletBase.h"
 
 // Sets default values
@@ -39,6 +40,7 @@ void ATA_WeaponRangeBase::StartWeaponAction()
 
 void ATA_WeaponRangeBase::StopWeaponAction()
 {
+	Super::StopWeaponAction();
 	bCanShoot = false;
 }
 
@@ -51,5 +53,18 @@ void ATA_WeaponRangeBase::FireRound()
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	GetWorld()->SpawnActor<ATA_BulletBase>(BulletClass, SpawnTransform, Params);
 	BP_FireRound();
+	NotifyOwner();
+}
+
+void ATA_WeaponRangeBase::NotifyOwner()
+{
+	if (GetOwner())
+	{
+		ATA_Player* Player = Cast<ATA_Player>(GetOwner());
+		if(IsValid(Player))
+		{
+			Player->OnWeaponAction();
+		}
+	}
 }
 

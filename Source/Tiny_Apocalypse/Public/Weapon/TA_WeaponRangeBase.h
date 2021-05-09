@@ -26,6 +26,9 @@ protected:
 	float FireRate = 1;
 
 	float FireCountdown = 0;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fight|Animation")
+	class UAnimMontage* ShootMontage;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -42,4 +45,5 @@ protected:
 private:
 	bool bCanShoot;
 	void FireRound();
+	void NotifyOwner();
 };

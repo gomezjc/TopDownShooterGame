@@ -31,12 +31,24 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
 	float FightingWalkSpeed;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon|Animation")
+	bool bAnimateRangeWeapon;
+	
+	class UAnimInstance* AnimInstance;
 	
 protected:
+
+	virtual void BeginPlay() override;
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
 public:
+
+	UFUNCTION(BlueprintCallable, Category="Weapon|Animation")
+	void SetAnimateRangeWeapon(bool Value);
+
+	void OnWeaponAction();
 
 	void StartAction();
 

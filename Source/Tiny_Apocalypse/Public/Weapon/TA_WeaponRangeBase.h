@@ -29,6 +29,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fight|Animation")
 	class UAnimMontage* ShootMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fight|Animation")
+	class UAnimMontage* ReloadMontage;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -42,6 +45,15 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_FireRound();
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animation|Montage")
+	void BP_ReloadComplete();
+
+public:
+	UFUNCTION(BlueprintCallable, Category="Animation|Montage")
+	UAnimMontage* GetReloadMontage() { return ReloadMontage; }
+
+	UFUNCTION(BlueprintCallable, Category = "Animation|Montage")
+	void NotifyReloadComplete();
 private:
 	bool bCanShoot;
 	void FireRound();

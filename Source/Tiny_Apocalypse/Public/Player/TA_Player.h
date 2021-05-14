@@ -36,18 +36,33 @@ protected:
 	bool bAnimateRangeWeapon;
 	
 	class UAnimInstance* AnimInstance;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon|Reload")
+	bool bIsReloading;
+
+	FTimerHandle TimeHandle_Reload;
 	
 protected:
 
 	virtual void BeginPlay() override;
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-	
+
+	void Roll();
+
+	void Reload();
+
+	bool WeaponNeedReload();
 public:
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon|Animation")
+	bool IsReloading() { return bIsReloading; }
 
 	UFUNCTION(BlueprintCallable, Category="Weapon|Animation")
 	void SetAnimateRangeWeapon(bool Value);
 
+	void OnReloadComplete();
+	
 	void OnWeaponAction();
 
 	void StartAction();

@@ -44,6 +44,11 @@ void ATA_WeaponRangeBase::StopWeaponAction()
 	bCanShoot = false;
 }
 
+void ATA_WeaponRangeBase::NotifyReloadComplete()
+{
+	BP_ReloadComplete();
+}
+
 void ATA_WeaponRangeBase::FireRound()
 {
 	AActor* BulletOwner = GetOwner() ? GetOwner() : this;

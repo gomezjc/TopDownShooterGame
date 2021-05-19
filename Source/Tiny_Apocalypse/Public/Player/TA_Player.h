@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Character/TA_CharacterBase.h"
+#include "Components/TimelineComponent.h"
+#include "Utils/Enums/ETA_BulletType.h"
 #include "TA_Player.generated.h"
 
 /**
@@ -34,11 +36,23 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon|Animation")
 	bool bAnimateRangeWeapon;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation|Montages")
+	class UAnimMontage* RollMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Timeline")
+	class UCurveFloat* fCurve;
+
 	class UAnimInstance* AnimInstance;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon|Reload")
 	bool bIsReloading;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement|Roll")
+	bool bIsRolling;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement|Roll")
+	float RollSpeed;
 
 	FTimerHandle TimeHandle_Reload;
 	
@@ -68,4 +82,25 @@ public:
 	void StartAction();
 
 	void StopAction();
+
+	void DisablePlayerMovement();
+
+	void RecoverPlayerMovement();
+
+private:
+	class UTimelineComponent* RollTimeline;
+
+	FOnTimelineFloat InterpolationRoll{};
+
+	FOnTimelineEvent RollTimelineFinish{};
+
+	FVector CurrentRollPosition;
+
+	FVector DestinationRollPosition;
+
+	UFUNCTION()
+	void TimelineRollFloatReturn(float value);
+
+	UFUNCTION()
+	void OnTimelineRollFinished();
 };

@@ -3,9 +3,13 @@
 
 #include "Player/TA_Player.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapon/TA_WeaponRangeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
+#include "Math/Vector.h"
 
 ATA_Player::ATA_Player()
 {
@@ -21,6 +25,14 @@ ATA_Player::ATA_Player()
 
 	DefaultWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	FightingWalkSpeed = DefaultWalkSpeed / 2;
+
+	RollTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimeLineRoll"));
+
+	InterpolationRoll.BindUFunction(this, FName("TimelineRollFloatReturn"));
+	RollTimelineFinish.BindUFunction(this, FName("OnTimelineRollFinished"));
+
+	bIsReloading = false;
+	bIsRolling = false;
 }
 
 void ATA_Player::BeginPlay()
@@ -30,6 +42,12 @@ void ATA_Player::BeginPlay()
 	if (IsValid(GetMesh()))
 	{
 		AnimInstance = GetMesh()->GetAnimInstance();
+	}
+
+	if (fCurve)
+	{	
+		RollTimeline->AddInterpFloat(fCurve, InterpolationRoll, FName("Alpha"));
+		RollTimeline->SetTimelineFinishedFunc(RollTimelineFinish);
 	}
 }
 
@@ -51,10 +69,11 @@ void ATA_Player::OnWeaponAction()
 
 void ATA_Player::StartAction()
 {
-	if(WeaponSelected && !bIsReloading)
+	if(WeaponSelected && !bIsReloading && !bIsRolling)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Start Weapon Action "));
 		bIsAttacking = true;
-		GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
+		//GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
 		WeaponSelected->StartWeaponAction();
 	}
 }
@@ -64,7 +83,7 @@ void ATA_Player::StopAction()
 	if (WeaponSelected)
 	{
 		bIsAttacking = false;
-		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+		//GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 		WeaponSelected->StopWeaponAction();
 		SetAnimateRangeWeapon(false);
 	}
@@ -83,7 +102,20 @@ void ATA_Player::OnReloadComplete()
 
 void ATA_Player::Roll()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Rolling"))
+	UE_LOG(LogTemp, Warning, TEXT("Start Rolling 1"))
+
+	if (!bIsRolling && !GetCharacterMovement()->IsFalling())
+	{
+		StopAction();
+		bIsRolling = true;
+		CurrentRollPosition = GetCapsuleComponent()->GetComponentLocation();
+		DestinationRollPosition = GetActorForwardVector() * RollSpeed;
+		AnimInstance->Montage_Play(RollMontage);
+		DisablePlayerMovement();
+		RollTimeline->SetLooping(false);
+		RollTimeline->SetIgnoreTimeDilation(true);
+		RollTimeline->PlayFromStart();
+	}
 }
 
 void ATA_Player::Reload()
@@ -115,3 +147,28 @@ bool ATA_Player::WeaponNeedReload()
 	return IsRangeWeapon;
 }
 
+void ATA_Player::DisablePlayerMovement()
+{
+	GetCharacterMovement()->DisableMovement();
+}
+
+void ATA_Player::RecoverPlayerMovement()
+{
+	GetCharacterMovement()->SetDefaultMovementMode();
+}
+
+void ATA_Player::TimelineRollFloatReturn(float value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Rolling"))
+	GetCapsuleComponent()->SetRelativeLocationAndRotation(
+		FMath::Lerp(CurrentRollPosition, CurrentRollPosition + DestinationRollPosition, value),
+		GetCapsuleComponent()->GetComponentRotation(), true);
+}
+
+void ATA_Player::OnTimelineRollFinished()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Stop Rolling"))
+	bIsRolling = false;
+	RollTimeline->Stop();
+	RecoverPlayerMovement();
+}

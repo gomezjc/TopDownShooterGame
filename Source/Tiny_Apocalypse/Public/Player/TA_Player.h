@@ -18,7 +18,12 @@ class TINY_APOCALYPSE_API ATA_Player : public ATA_CharacterBase
 
 public:
 	ATA_Player();
-
+	virtual void BeginPlay() override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	void Roll();
+	void Reload();
+	bool WeaponNeedReload();
+	
 protected:
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -55,18 +60,10 @@ protected:
 	float RollSpeed;
 
 	FTimerHandle TimeHandle_Reload;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	TArray<class UTA_ItemInventory*> InventoryData; 
 	
-protected:
-
-	virtual void BeginPlay() override;
-	
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
-	void Roll();
-
-	void Reload();
-
-	bool WeaponNeedReload();
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon|Animation")
@@ -87,6 +84,20 @@ public:
 
 	void RecoverPlayerMovement();
 
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	class ATA_WeaponBase* GetSelectedWeapon() { return WeaponSelected; }
+
+	UFUNCTION(BlueprintCallable, Category="Weapon Equip")
+	void EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass);
+	
+	void UnEquipWeapon();
+
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	void AddItemToInventory(class UTA_ItemInventory* ItemInventory);
+
+    UFUNCTION(BlueprintCallable, Category="Inventory")
+	class UTA_ItemBullet* GetBulletByType(ETA_BulletType BulletType);
+	
 private:
 	class UTimelineComponent* RollTimeline;
 

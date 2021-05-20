@@ -42,6 +42,10 @@ public:
 
 	virtual void StopWeaponAction();
 
+	virtual void OnWeaponEquipped();
+
+	virtual void OnWeaponUnEquipped();
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_StartWeaponAction();
 

@@ -2,6 +2,7 @@
 
 #include "Weapon/TA_WeaponRangeBase.h"
 #include "Components/ArrowComponent.h"
+#include "Inventory/TA_ItemBullet.h"
 #include "Player/TA_Player.h"
 #include "Weapon/Bullet/TA_BulletBase.h"
 
@@ -44,6 +45,17 @@ void ATA_WeaponRangeBase::StopWeaponAction()
 	bCanShoot = false;
 }
 
+void ATA_WeaponRangeBase::OnWeaponEquipped()
+{
+	Super::OnWeaponEquipped();
+	GetBulletsFromInventory();
+}
+
+void ATA_WeaponRangeBase::OnWeaponUnEquipped()
+{
+	Super::OnWeaponUnEquipped();
+}
+
 void ATA_WeaponRangeBase::NotifyReloadComplete()
 {
 	BP_ReloadComplete();
@@ -51,25 +63,56 @@ void ATA_WeaponRangeBase::NotifyReloadComplete()
 
 void ATA_WeaponRangeBase::FireRound()
 {
-	AActor* BulletOwner = GetOwner() ? GetOwner() : this;
-	const FTransform SpawnTransform = MuzzleComponent->GetComponentTransform();
-	FActorSpawnParameters Params;
-	Params.Owner = BulletOwner;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	GetWorld()->SpawnActor<ATA_BulletBase>(BulletClass, SpawnTransform, Params);
-	BP_FireRound();
-	NotifyOwner();
+	if (CurrentBullets > 0)
+	{
+		CurrentBullets--;
+		AActor* BulletOwner = GetOwner() ? GetOwner() : this;
+		const FTransform SpawnTransform = MuzzleComponent->GetComponentTransform();
+		FActorSpawnParameters Params;
+		Params.Owner = BulletOwner;
+		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		GetWorld()->SpawnActor<ATA_BulletBase>(BulletClass, SpawnTransform, Params);
+		BP_FireRound();
+		NotifyOwner();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No AMMO"));
+	}
 }
 
 void ATA_WeaponRangeBase::NotifyOwner()
 {
-	if (GetOwner())
+	ATA_Player* Player = GetPlayer();
+	if (IsValid(Player))
 	{
-		ATA_Player* Player = Cast<ATA_Player>(GetOwner());
-		if(IsValid(Player))
-		{
-			Player->OnWeaponAction();
-		}
+		Player->OnWeaponAction();
 	}
 }
 
+ATA_Player* ATA_WeaponRangeBase::GetPlayer()
+{
+	if (GetOwner())
+	{
+		ATA_Player* Player = Cast<ATA_Player>(GetOwner());
+		if (IsValid(Player))
+		{
+			return Player;
+		}
+	}
+	return nullptr;
+}
+
+void ATA_WeaponRangeBase::GetBulletsFromInventory()
+{
+	ATA_Player* Player = GetPlayer();
+	if (IsValid(Player))
+	{
+		UTA_ItemBullet* Bullet = Player->GetBulletByType(BulletUsed);
+		if (IsValid(Bullet))
+		{
+			CurrentBullets = Bullet->GetQuantity();
+			Bullet->UpdateQuantity(-CurrentBullets);
+		}
+	}
+}

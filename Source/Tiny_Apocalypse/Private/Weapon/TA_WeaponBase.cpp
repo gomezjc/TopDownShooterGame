@@ -45,3 +45,11 @@ void ATA_WeaponBase::StopWeaponAction()
 	UE_LOG(LogTemp, Warning, TEXT("Stop Weapon Action 1"));
 	BP_StopWeaponAction();
 }
+
+void ATA_WeaponBase::OnWeaponEquipped()
+{
+}
+
+void ATA_WeaponBase::OnWeaponUnEquipped()
+{
+}

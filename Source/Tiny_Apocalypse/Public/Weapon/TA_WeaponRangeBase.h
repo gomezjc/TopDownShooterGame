@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TA_WeaponBase.h"
+#include "Utils/Enums/ETA_BulletType.h"
 #include "TA_WeaponRangeBase.generated.h"
 
 UCLASS()
@@ -32,6 +33,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fight|Animation")
 	class UAnimMontage* ReloadMontage;
+
+	UPROPERTY(VisibleAnywhere, Category="Weapon|Range")
+	int32 CurrentBullets = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range")
+	ETA_BulletType BulletUsed;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -42,12 +49,22 @@ protected:
 	
 	virtual void StopWeaponAction() override;
 
+	virtual void OnWeaponEquipped() override;
+
+	virtual void OnWeaponUnEquipped() override;
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_FireRound();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animation|Montage")
 	void BP_ReloadComplete();
 
+	UFUNCTION(BlueprintCallable, Category="Owner")
+	class ATA_Player* GetPlayer();
+
+	UFUNCTION(BlueprintCallable, Category="Weapon|Range")
+	void GetBulletsFromInventory();
+	
 public:
 	UFUNCTION(BlueprintCallable, Category="Animation|Montage")
 	UAnimMontage* GetReloadMontage() { return ReloadMontage; }

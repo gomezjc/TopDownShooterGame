@@ -61,14 +61,6 @@ void ATA_CharacterBase::MoveRight(float Value)
 	}
 }
 
-void ATA_CharacterBase::StartWeaponAction()
-{
-	if (WeaponSelected && bIsAttacking)
-	{
-		WeaponSelected->StartWeaponAction();
-	}
-}
-
 // Called to bind functionality to input
 void ATA_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -76,26 +68,3 @@ void ATA_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveForward", this, &ATA_CharacterBase::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATA_CharacterBase::MoveRight);
 }
-
-void ATA_CharacterBase::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
-{
-	if (WeaponSelected)
-	{
-		UnEquipWeapon();
-	}
-
-	FActorSpawnParameters Params;
-	Params.Owner = this;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponBase>(WeaponClass, Params);
-	WeaponSelected->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketWeapon);
-}
-
-void ATA_CharacterBase::UnEquipWeapon()
-{
-	if (WeaponSelected)
-	{
-		WeaponSelected->Destroy();
-	}
-}
-

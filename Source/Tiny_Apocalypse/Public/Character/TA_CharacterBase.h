@@ -37,17 +37,6 @@ protected:
 	void MoveRight(float Value);
 	
 public:
-
-	virtual void StartWeaponAction();
-	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UFUNCTION(BlueprintCallable, Category="Weapon")
-	class ATA_WeaponBase* GetSelectedWeapon() { return WeaponSelected; }
-
-	UFUNCTION(BlueprintCallable, Category="Weapon Equip")
-	void EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass);
-	
-	void UnEquipWeapon();
 };

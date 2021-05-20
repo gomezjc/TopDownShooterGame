@@ -9,6 +9,7 @@
 #include "Weapon/TA_WeaponRangeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
+#include "Inventory/TA_ItemBullet.h"
 #include "Math/Vector.h"
 
 ATA_Player::ATA_Player()
@@ -61,6 +62,29 @@ void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAction("Roll", IE_Pressed, this, &ATA_Player::Roll);
 }
 
+void ATA_Player::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
+{
+	if (WeaponSelected)
+	{
+		UnEquipWeapon();
+	}
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponBase>(WeaponClass, Params);
+	WeaponSelected->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketWeapon);
+	WeaponSelected->OnWeaponEquipped();
+}
+
+void ATA_Player::UnEquipWeapon()
+{
+	if (WeaponSelected)
+	{
+		WeaponSelected->Destroy();
+		WeaponSelected->OnWeaponUnEquipped();
+	}
+}
 
 void ATA_Player::OnWeaponAction()
 {
@@ -71,7 +95,7 @@ void ATA_Player::StartAction()
 {
 	if(WeaponSelected && !bIsReloading && !bIsRolling)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Start Weapon Action "));
+		UE_LOG(LogTemp, Warning, TEXT("Start Player Action "));
 		bIsAttacking = true;
 		//GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
 		WeaponSelected->StartWeaponAction();
@@ -155,6 +179,29 @@ void ATA_Player::DisablePlayerMovement()
 void ATA_Player::RecoverPlayerMovement()
 {
 	GetCharacterMovement()->SetDefaultMovementMode();
+}
+
+void ATA_Player::AddItemToInventory(UTA_ItemInventory* ItemInventory)
+{
+	InventoryData.Add(ItemInventory);
+}
+
+UTA_ItemBullet* ATA_Player::GetBulletByType(ETA_BulletType BulletType)
+{
+	TArray<UTA_ItemInventory*> Bullets = InventoryData.FilterByPredicate([](const UTA_ItemInventory* Item){
+		return Item->GetItemType() == ETA_ItemType::ItemType_Bullet;
+	});
+	UTA_ItemBullet* BulletSelected = nullptr;
+	for(UTA_ItemInventory* ItemBullet : Bullets)
+	{
+		UTA_ItemBullet* BulletObj = Cast<UTA_ItemBullet>(ItemBullet);
+		if (IsValid(BulletObj) && BulletObj->GetBulletType() == BulletType)
+		{
+			BulletSelected = BulletObj;
+			break;
+		}
+	}
+	return BulletSelected;
 }
 
 void ATA_Player::TimelineRollFloatReturn(float value)

@@ -34,7 +34,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Fight|Animation")
 	class UAnimMontage* ReloadMontage;
 
-	UPROPERTY(VisibleAnywhere, Category="Weapon|Range")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Weapon|Range")
 	int32 CurrentBullets = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range")

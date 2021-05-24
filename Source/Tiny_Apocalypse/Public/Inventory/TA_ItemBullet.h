@@ -27,6 +27,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
 	ETA_BulletType GetBulletType() const { return BulletType; }
 
+	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
+	void SetBulletType(ETA_BulletType BulletType);
+
+	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
+	void SetQuantity(int32 Quantity);
+
+	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
+	void SetMaxQuantity(int32 MaxQuantity);
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory|Bullet")
 	ETA_BulletType BulletType;

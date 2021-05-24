@@ -13,3 +13,18 @@ int32 UTA_ItemBullet::UpdateQuantity(int32 Value)
 	Quantity = FMath::Clamp((Value + Quantity), 0, MaxQuantity);
 	return Quantity;
 }
+
+void UTA_ItemBullet::SetBulletType(ETA_BulletType BulletTypeParam)
+{
+	BulletType = BulletTypeParam;
+}
+
+void UTA_ItemBullet::SetQuantity(int32 QuantityParam)
+{
+	Quantity = QuantityParam;
+}
+
+void UTA_ItemBullet::SetMaxQuantity(int32 MaxQuantityParam)
+{
+	MaxQuantity = MaxQuantityParam;
+}

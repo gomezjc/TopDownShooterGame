@@ -59,6 +59,7 @@ void ATA_WeaponRangeBase::OnWeaponUnEquipped()
 void ATA_WeaponRangeBase::NotifyReloadComplete()
 {
 	BP_ReloadComplete();
+	GetBulletsFromInventory();
 }
 
 void ATA_WeaponRangeBase::FireRound()
@@ -103,6 +104,7 @@ ATA_Player* ATA_WeaponRangeBase::GetPlayer()
 	return nullptr;
 }
 
+// TODO: call when reloaded to bring ammo from inventory
 void ATA_WeaponRangeBase::GetBulletsFromInventory()
 {
 	ATA_Player* Player = GetPlayer();

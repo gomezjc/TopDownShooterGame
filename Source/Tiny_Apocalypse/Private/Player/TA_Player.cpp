@@ -75,6 +75,7 @@ void ATA_Player::EquipWeapon(TSubclassOf<ATA_WeaponBase> WeaponClass)
 	WeaponSelected = GetWorld()->SpawnActor<ATA_WeaponBase>(WeaponClass, Params);
 	WeaponSelected->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketWeapon);
 	WeaponSelected->OnWeaponEquipped();
+	OnWeaponChangeDelegate.Broadcast(WeaponSelected);
 }
 
 void ATA_Player::UnEquipWeapon()
@@ -122,6 +123,7 @@ void ATA_Player::OnReloadComplete()
 {
 	UE_LOG(LogTemp, Warning, TEXT("OnReloadComplete"))
 	bIsReloading = false;
+	OnWeaponChangeDelegate.Broadcast(WeaponSelected);
 }
 
 void ATA_Player::Roll()

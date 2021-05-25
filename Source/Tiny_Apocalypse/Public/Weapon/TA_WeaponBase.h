@@ -18,6 +18,9 @@ public:
 
 protected:
 
+	UPROPERTY(EditAnywhere, Category="Weapon")
+	FText WeaponName;
+
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	ETA_WeaponType WeaponType;
 
@@ -57,4 +60,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	TSubclassOf<ATA_WeaponBase> GetWeaponClass() { return WeaponClass; }
+
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	FText GetWeaponName() { return WeaponName; }
 };

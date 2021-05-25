@@ -8,9 +8,8 @@
 #include "Utils/Enums/ETA_BulletType.h"
 #include "TA_Player.generated.h"
 
-/**
- * 
- */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponChangeSignature, ATA_WeaponBase*, CurrentWeapon);
+
 UCLASS()
 class TINY_APOCALYPSE_API ATA_Player : public ATA_CharacterBase
 {
@@ -97,6 +96,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category="Inventory")
 	class UTA_ItemBullet* GetBulletByType(ETA_BulletType BulletType);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnWeaponChangeSignature OnWeaponChangeDelegate;
 	
 private:
 	class UTimelineComponent* RollTimeline;

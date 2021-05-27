@@ -16,25 +16,22 @@ public:
 	UTA_ItemBullet();
 
 	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
-	int32 UpdateQuantity(int32 Value);
-
-	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
-	int32 GetQuantity() const { return Quantity; };
-
-	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
-	int32 GetMaxQuantity() const { return MaxQuantity; };
-
+	int32 ReloadMagazine(int32 MagazineCapacity);
+	
 	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
 	ETA_BulletType GetBulletType() const { return BulletType; }
 
 	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
 	void SetBulletType(ETA_BulletType BulletType);
+	
+	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
+	int32 GetQuantity() const { return Quantity; };
 
+	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
+	int32 GetMagazineWeapon();
+	
 	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
 	void SetQuantity(int32 Quantity);
-
-	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
-	void SetMaxQuantity(int32 MaxQuantity);
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory|Bullet")
@@ -43,6 +40,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory|Bullet")
 	int32 Quantity = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory|Bullet")
-	int32 MaxQuantity = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Inventory|Bullet")
+	int32 MagazineWeapon = 0;
 };

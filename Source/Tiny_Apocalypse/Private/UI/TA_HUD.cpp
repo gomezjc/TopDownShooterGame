@@ -2,9 +2,11 @@
 
 
 #include "UI/TA_HUD.h"
+#include "Inventory/TA_ItemBullet.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/TA_Player.h"
 #include "Weapon/TA_WeaponBase.h"
+#include "Weapon/TA_WeaponRangeBase.h"
 
 void UTA_HUD::InitializeWidget()
 {
@@ -26,5 +28,16 @@ void UTA_HUD::UpdateWeapon(ATA_WeaponBase* WeaponSelected)
 	if (IsValid(WeaponSelected))
 	{
 		WeaponName = WeaponSelected->GetWeaponName();
+		ATA_WeaponRangeBase* WeaponRangeSelected = Cast<ATA_WeaponRangeBase>(WeaponSelected);
+		if (IsValid(WeaponRangeSelected))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("HUD_WEAPON_RANGE"))
+			WeaponBullets = WeaponRangeSelected->GetCurrentBullets();
+			UTA_ItemBullet* BulletInventory = WeaponRangeSelected->GetBulletsFromInventory();
+			if (IsValid(BulletInventory))
+			{
+				InventoryBullets = BulletInventory->GetQuantity();
+			}
+		}
 	}
 }

@@ -36,13 +36,11 @@ bool ATA_WeaponBase::IsPlayer(AActor* OtherActor)
 
 void ATA_WeaponBase::StartWeaponAction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Start Weapon Action 1"));
 	BP_StartWeaponAction();
 }
 
 void ATA_WeaponBase::StopWeaponAction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stop Weapon Action 1"));
 	BP_StopWeaponAction();
 }
 

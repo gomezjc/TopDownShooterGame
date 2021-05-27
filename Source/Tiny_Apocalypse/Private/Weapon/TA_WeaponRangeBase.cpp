@@ -48,7 +48,6 @@ void ATA_WeaponRangeBase::StopWeaponAction()
 void ATA_WeaponRangeBase::OnWeaponEquipped()
 {
 	Super::OnWeaponEquipped();
-	GetBulletsFromInventory();
 }
 
 void ATA_WeaponRangeBase::OnWeaponUnEquipped()
@@ -59,7 +58,7 @@ void ATA_WeaponRangeBase::OnWeaponUnEquipped()
 void ATA_WeaponRangeBase::NotifyReloadComplete()
 {
 	BP_ReloadComplete();
-	GetBulletsFromInventory();
+	SetMagazineWeapon();
 }
 
 void ATA_WeaponRangeBase::FireRound()
@@ -91,6 +90,15 @@ void ATA_WeaponRangeBase::NotifyOwner()
 	}
 }
 
+void ATA_WeaponRangeBase::SetMagazineWeapon()
+{
+	UTA_ItemBullet* BulletInventory = GetBulletsFromInventory();
+	if (IsValid(BulletInventory))
+	{
+		CurrentBullets = BulletInventory->ReloadMagazine(MagazineCapacity);
+	}
+}
+
 ATA_Player* ATA_WeaponRangeBase::GetPlayer()
 {
 	if (GetOwner())
@@ -104,17 +112,13 @@ ATA_Player* ATA_WeaponRangeBase::GetPlayer()
 	return nullptr;
 }
 
-// TODO: call when reloaded to bring ammo from inventory
-void ATA_WeaponRangeBase::GetBulletsFromInventory()
+UTA_ItemBullet* ATA_WeaponRangeBase::GetBulletsFromInventory()
 {
 	ATA_Player* Player = GetPlayer();
+	UTA_ItemBullet* Bullet = nullptr;
 	if (IsValid(Player))
 	{
-		UTA_ItemBullet* Bullet = Player->GetBulletByType(BulletUsed);
-		if (IsValid(Bullet))
-		{
-			CurrentBullets = Bullet->GetQuantity();
-			Bullet->UpdateQuantity(-CurrentBullets);
-		}
+		 Bullet = Player->GetBulletByType(BulletUsed);
 	}
+	return Bullet;
 }

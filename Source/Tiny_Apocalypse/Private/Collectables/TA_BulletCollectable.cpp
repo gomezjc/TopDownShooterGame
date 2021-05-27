@@ -27,7 +27,6 @@ void ATA_BulletCollectable::OnInteract(UPrimitiveComponent* OverlappedComponent,
 		UTA_ItemBullet* ItemToAdd = NewObject<UTA_ItemBullet>();
 		ItemToAdd->SetQuantity(QuantityToPick);
 		ItemToAdd->SetBulletType(BulletType);
-		ItemToAdd->SetMaxQuantity(100); //TODO: Refactor Max quantity Bullets
 		Player->AddItemToInventory(ItemToAdd);
 		Destroy(); // TODO: Let the rest of bullets available to pick and don't destroy on this scenario.
 	}

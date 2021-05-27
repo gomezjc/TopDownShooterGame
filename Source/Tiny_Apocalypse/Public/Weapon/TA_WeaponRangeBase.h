@@ -38,6 +38,9 @@ protected:
 	int32 CurrentBullets = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range")
+	int32 MagazineCapacity = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range")
 	ETA_BulletType BulletUsed;
 	
 protected:
@@ -61,18 +64,27 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category="Owner")
 	class ATA_Player* GetPlayer();
-
-	UFUNCTION(BlueprintCallable, Category="Weapon|Range")
-	void GetBulletsFromInventory();
 	
 public:
+
+	UFUNCTION(BlueprintCallable, Category="Weapon|Range")
+	int32 GetCurrentBullets() { return CurrentBullets; }
+
+	UFUNCTION(BlueprintCallable, Category="Weapon|Range")
+	int32 GetMagazineCapacity() { return MagazineCapacity; }
+	
 	UFUNCTION(BlueprintCallable, Category="Animation|Montage")
 	UAnimMontage* GetReloadMontage() { return ReloadMontage; }
 
 	UFUNCTION(BlueprintCallable, Category = "Animation|Montage")
 	void NotifyReloadComplete();
+
+	UFUNCTION(BlueprintCallable, Category="Weapon|Range")
+	class UTA_ItemBullet* GetBulletsFromInventory();
 private:
 	bool bCanShoot;
 	void FireRound();
 	void NotifyOwner();
+
+	void SetMagazineWeapon();
 };

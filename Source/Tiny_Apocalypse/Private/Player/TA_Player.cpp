@@ -96,7 +96,6 @@ void ATA_Player::StartAction()
 {
 	if(WeaponSelected && !bIsReloading && !bIsRolling)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Start Player Action "));
 		bIsAttacking = true;
 		//GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
 		WeaponSelected->StartWeaponAction();
@@ -121,15 +120,12 @@ void ATA_Player::SetAnimateRangeWeapon(bool Value)
 
 void ATA_Player::OnReloadComplete()
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnReloadComplete"))
 	bIsReloading = false;
 	OnWeaponChangeDelegate.Broadcast(WeaponSelected);
 }
 
 void ATA_Player::Roll()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Start Rolling 1"))
-
 	if (!bIsRolling && !GetCharacterMovement()->IsFalling())
 	{
 		StopAction();
@@ -148,7 +144,6 @@ void ATA_Player::Reload()
 {
 	if (WeaponNeedReload())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Reloading"))
 		ATA_WeaponRangeBase* WeaponRangeSelected = Cast<ATA_WeaponRangeBase>(WeaponSelected);
 		if (IsValid(AnimInstance) && IsValid(WeaponRangeSelected))
 		{
@@ -208,7 +203,6 @@ UTA_ItemBullet* ATA_Player::GetBulletByType(ETA_BulletType BulletType)
 
 void ATA_Player::TimelineRollFloatReturn(float value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Rolling"))
 	GetCapsuleComponent()->SetRelativeLocationAndRotation(
 		FMath::Lerp(CurrentRollPosition, CurrentRollPosition + DestinationRollPosition, value),
 		GetCapsuleComponent()->GetComponentRotation(), true);
@@ -216,7 +210,6 @@ void ATA_Player::TimelineRollFloatReturn(float value)
 
 void ATA_Player::OnTimelineRollFinished()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stop Rolling"))
 	bIsRolling = false;
 	RollTimeline->Stop();
 	RecoverPlayerMovement();

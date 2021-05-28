@@ -9,6 +9,8 @@
 #include "TA_Player.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponChangeSignature, ATA_WeaponBase*, CurrentWeapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUnEquipWeaponSignature, ATA_WeaponBase*, CurrentWeapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponShootSignature, int32, CurrentBullets);
 
 UCLASS()
 class TINY_APOCALYPSE_API ATA_Player : public ATA_CharacterBase
@@ -73,7 +75,7 @@ public:
 
 	void OnReloadComplete();
 	
-	void OnWeaponAction();
+	void OnWeaponAction(int32 CurrentBullets);
 
 	void StartAction();
 
@@ -99,6 +101,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnWeaponChangeSignature OnWeaponChangeDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnUnEquipWeaponSignature OnUnEquipWeaponDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnWeaponShootSignature OnWeaponShootDelegate;
 	
 private:
 	class UTimelineComponent* RollTimeline;

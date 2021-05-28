@@ -64,6 +64,11 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category="Owner")
 	class ATA_Player* GetPlayer();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Weapon|Range")
+	class UTA_ItemBullet* BulletWeapon;
+
+	void ValidateMagazineInventory();
 	
 public:
 

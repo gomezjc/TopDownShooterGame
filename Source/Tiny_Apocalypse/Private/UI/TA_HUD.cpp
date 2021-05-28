@@ -18,6 +18,7 @@ void UTA_HUD::InitializeWidget()
 		{
 			PlayerCharacter = Player;
 			Player->OnWeaponChangeDelegate.AddDynamic(this, &UTA_HUD::UpdateWeapon);
+			Player->OnWeaponShootDelegate.AddDynamic(this, &UTA_HUD::UpdateBullets);
 		}
 	}
 }
@@ -31,7 +32,7 @@ void UTA_HUD::UpdateWeapon(ATA_WeaponBase* WeaponSelected)
 		ATA_WeaponRangeBase* WeaponRangeSelected = Cast<ATA_WeaponRangeBase>(WeaponSelected);
 		if (IsValid(WeaponRangeSelected))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("HUD_WEAPON_RANGE"))
+			UE_LOG(LogTemp, Warning, TEXT("HUD_WEAPON: ADD RANGE"));
 			WeaponBullets = WeaponRangeSelected->GetCurrentBullets();
 			UTA_ItemBullet* BulletInventory = WeaponRangeSelected->GetBulletsFromInventory();
 			if (IsValid(BulletInventory))
@@ -40,4 +41,13 @@ void UTA_HUD::UpdateWeapon(ATA_WeaponBase* WeaponSelected)
 			}
 		}
 	}
+}
+
+void UTA_HUD::UpdateBullets(int32 CurrentBullets)
+{
+	WeaponBullets = CurrentBullets;
+}
+
+void UTA_HUD::UnEquipWeapon(ATA_WeaponBase* WeaponSelected)
+{
 }

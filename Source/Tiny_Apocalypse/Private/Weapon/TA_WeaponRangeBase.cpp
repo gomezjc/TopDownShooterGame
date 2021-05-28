@@ -48,6 +48,7 @@ void ATA_WeaponRangeBase::StopWeaponAction()
 void ATA_WeaponRangeBase::OnWeaponEquipped()
 {
 	Super::OnWeaponEquipped();
+	ValidateMagazineInventory();
 }
 
 void ATA_WeaponRangeBase::OnWeaponUnEquipped()
@@ -66,6 +67,11 @@ void ATA_WeaponRangeBase::FireRound()
 	if (CurrentBullets > 0)
 	{
 		CurrentBullets--;
+		if (IsValid(BulletWeapon))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("HUD_WEAPON: ADD RANGE %d"), CurrentBullets);
+			BulletWeapon->SetMagazineWeapon(CurrentBullets);
+		}
 		AActor* BulletOwner = GetOwner() ? GetOwner() : this;
 		const FTransform SpawnTransform = MuzzleComponent->GetComponentTransform();
 		FActorSpawnParameters Params;
@@ -86,16 +92,16 @@ void ATA_WeaponRangeBase::NotifyOwner()
 	ATA_Player* Player = GetPlayer();
 	if (IsValid(Player))
 	{
-		Player->OnWeaponAction();
+		Player->OnWeaponAction(CurrentBullets);
 	}
 }
 
 void ATA_WeaponRangeBase::SetMagazineWeapon()
 {
-	UTA_ItemBullet* BulletInventory = GetBulletsFromInventory();
-	if (IsValid(BulletInventory))
+	if (IsValid(BulletWeapon))
 	{
-		CurrentBullets = BulletInventory->ReloadMagazine(MagazineCapacity);
+		BulletWeapon->SetMagazineWeapon(CurrentBullets);
+		CurrentBullets = BulletWeapon->ReloadMagazine(MagazineCapacity);
 	}
 }
 
@@ -110,6 +116,15 @@ ATA_Player* ATA_WeaponRangeBase::GetPlayer()
 		}
 	}
 	return nullptr;
+}
+
+void ATA_WeaponRangeBase::ValidateMagazineInventory()
+{
+	BulletWeapon = GetBulletsFromInventory();
+	if (IsValid(BulletWeapon))
+	{
+		CurrentBullets = BulletWeapon->GetMagazineWeapon();
+	}
 }
 
 UTA_ItemBullet* ATA_WeaponRangeBase::GetBulletsFromInventory()

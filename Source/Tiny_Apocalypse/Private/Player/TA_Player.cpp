@@ -87,9 +87,10 @@ void ATA_Player::UnEquipWeapon()
 	}
 }
 
-void ATA_Player::OnWeaponAction()
+void ATA_Player::OnWeaponAction(int32 CurrentBullets)
 {
 	SetAnimateRangeWeapon(true);
+	OnWeaponShootDelegate.Broadcast(CurrentBullets);
 }
 
 void ATA_Player::StartAction()
@@ -181,6 +182,12 @@ void ATA_Player::RecoverPlayerMovement()
 void ATA_Player::AddItemToInventory(UTA_ItemInventory* ItemInventory)
 {
 	InventoryData.Add(ItemInventory);
+
+	if(WeaponSelected)
+	{
+		WeaponSelected->OnWeaponEquipped(); // TODO:: Need set the bullets when picked after weapon is equipped
+		OnWeaponChangeDelegate.Broadcast(WeaponSelected);
+	}
 }
 
 UTA_ItemBullet* ATA_Player::GetBulletByType(ETA_BulletType BulletType)

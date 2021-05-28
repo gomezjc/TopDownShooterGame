@@ -27,6 +27,12 @@ protected:
 
 	UFUNCTION()
 	void UpdateWeapon(class ATA_WeaponBase* WeaponSelected);
+
+	UFUNCTION()
+	void UpdateBullets(int32 CurrentBullets);
+
+	UFUNCTION()
+	void UnEquipWeapon(class ATA_WeaponBase* WeaponSelected);
 	
 public:
 	UFUNCTION(BlueprintCallable, Category="Setup")

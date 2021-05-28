@@ -32,6 +32,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
 	void SetQuantity(int32 Quantity);
+
+	UFUNCTION(BlueprintCallable, Category="Inventory|Bullet")
+	void SetMagazineWeapon(int32 Value);
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Inventory|Bullet")

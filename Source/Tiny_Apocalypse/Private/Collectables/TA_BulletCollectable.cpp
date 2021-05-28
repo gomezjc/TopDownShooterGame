@@ -35,5 +35,5 @@ void ATA_BulletCollectable::OnInteract(UPrimitiveComponent* OverlappedComponent,
 void ATA_BulletCollectable::OnEndInteract(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	UE_LOG(LogTemp, Warning, TEXT("End Interact"))
+	UE_LOG(LogTemp, Warning, TEXT("End Interact"));
 }

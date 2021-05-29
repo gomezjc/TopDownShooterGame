@@ -42,6 +42,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range")
 	ETA_BulletType BulletUsed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range", meta=(ClampMin=0.0f, ClampMax=1.0f))
+	float RecoilForcePercentage;
 	
 protected:
 	virtual void BeginPlay() override;

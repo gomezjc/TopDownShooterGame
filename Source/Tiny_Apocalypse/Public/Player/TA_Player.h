@@ -37,9 +37,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
 	float DefaultWalkSpeed;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
-	float FightingWalkSpeed;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon|Animation")
 	bool bAnimateRangeWeapon;
 
@@ -61,9 +58,14 @@ protected:
 	float RollSpeed;
 
 	FTimerHandle TimeHandle_Reload;
+	
+	FTimerHandle TimeHandle_RecoilWeapon;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
-	TArray<class UTA_ItemInventory*> InventoryData; 
+	TArray<class UTA_ItemInventory*> InventoryData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range", meta=(ClampMin=0.0f, ClampMax=1.0f))
+	float RecoilTime;
 	
 public:
 
@@ -75,7 +77,7 @@ public:
 
 	void OnReloadComplete();
 	
-	void OnWeaponAction(int32 CurrentBullets);
+	void OnWeaponAction(int32 CurrentBullets, float RecoilPercentage);
 
 	void StartAction();
 

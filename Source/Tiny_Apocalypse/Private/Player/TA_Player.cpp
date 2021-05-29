@@ -25,7 +25,6 @@ ATA_Player::ATA_Player()
 	CameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	DefaultWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	FightingWalkSpeed = DefaultWalkSpeed / 2;
 
 	RollTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimeLineRoll"));
 
@@ -87,10 +86,13 @@ void ATA_Player::UnEquipWeapon()
 	}
 }
 
-void ATA_Player::OnWeaponAction(int32 CurrentBullets)
+void ATA_Player::OnWeaponAction(int32 CurrentBullets, float RecoilPercentage)
 {
+	UE_LOG(LogTemp, Warning, TEXT("WeaponAction1"));
 	SetAnimateRangeWeapon(true);
 	OnWeaponShootDelegate.Broadcast(CurrentBullets);
+	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed * RecoilPercentage;
+	GetWorld()->GetTimerManager().SetTimer(TimeHandle_RecoilWeapon, this, &ATA_Player::RecoverPlayerMovement, RecoilTime, false);
 }
 
 void ATA_Player::StartAction()
@@ -98,7 +100,6 @@ void ATA_Player::StartAction()
 	if(WeaponSelected && !bIsReloading && !bIsRolling)
 	{
 		bIsAttacking = true;
-		//GetCharacterMovement()->MaxWalkSpeed = FightingWalkSpeed;
 		WeaponSelected->StartWeaponAction();
 	}
 }
@@ -108,7 +109,6 @@ void ATA_Player::StopAction()
 	if (WeaponSelected)
 	{
 		bIsAttacking = false;
-		//GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 		WeaponSelected->StopWeaponAction();
 		SetAnimateRangeWeapon(false);
 	}
@@ -176,6 +176,7 @@ void ATA_Player::DisablePlayerMovement()
 
 void ATA_Player::RecoverPlayerMovement()
 {
+	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 	GetCharacterMovement()->SetDefaultMovementMode();
 }
 

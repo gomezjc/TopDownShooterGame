@@ -92,7 +92,7 @@ void ATA_WeaponRangeBase::NotifyOwner()
 	ATA_Player* Player = GetPlayer();
 	if (IsValid(Player))
 	{
-		Player->OnWeaponAction(CurrentBullets);
+		Player->OnWeaponAction(CurrentBullets, RecoilForcePercentage);
 	}
 }
 

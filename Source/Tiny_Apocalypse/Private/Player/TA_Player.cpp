@@ -88,7 +88,6 @@ void ATA_Player::UnEquipWeapon()
 
 void ATA_Player::OnWeaponAction(int32 CurrentBullets, float RecoilPercentage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("WeaponAction1"));
 	SetAnimateRangeWeapon(true);
 	OnWeaponShootDelegate.Broadcast(CurrentBullets);
 	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed * RecoilPercentage;
@@ -182,11 +181,23 @@ void ATA_Player::RecoverPlayerMovement()
 
 void ATA_Player::AddItemToInventory(UTA_ItemInventory* ItemInventory)
 {
-	InventoryData.Add(ItemInventory);
-
+	UTA_ItemBullet* ItemBulletInventory = Cast<UTA_ItemBullet>(ItemInventory);
+	if(IsValid(ItemBulletInventory))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Is a Bullet"));
+		UTA_ItemBullet* CurrentBulletInventory = GetBulletByType(ItemBulletInventory->GetBulletType());
+		if (IsValid(CurrentBulletInventory))
+		{
+			CurrentBulletInventory->SetQuantity(CurrentBulletInventory->GetQuantity() + ItemBulletInventory->GetQuantity());
+		}else
+		{
+			InventoryData.Add(ItemInventory);
+		}
+	}
+	
 	if(WeaponSelected)
 	{
-		WeaponSelected->OnWeaponEquipped(); // TODO:: Need set the bullets when picked after weapon is equipped
+		WeaponSelected->OnWeaponEquipped();
 		OnWeaponChangeDelegate.Broadcast(WeaponSelected);
 	}
 }

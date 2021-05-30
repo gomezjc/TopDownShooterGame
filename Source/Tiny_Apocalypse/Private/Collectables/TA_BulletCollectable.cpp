@@ -28,7 +28,7 @@ void ATA_BulletCollectable::OnInteract(UPrimitiveComponent* OverlappedComponent,
 		ItemToAdd->SetQuantity(QuantityToPick);
 		ItemToAdd->SetBulletType(BulletType);
 		Player->AddItemToInventory(ItemToAdd);
-		Destroy(); // TODO: Let the rest of bullets available to pick and don't destroy on this scenario.
+		Destroy();
 	}
 }
 

@@ -27,9 +27,13 @@ ATA_Player::ATA_Player()
 	DefaultWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 
 	RollTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimeLineRoll"));
+	RecoilTimeLine = CreateDefaultSubobject<UTimelineComponent>(TEXT("RecoilTimeLine"));
 
 	InterpolationRoll.BindUFunction(this, FName("TimelineRollFloatReturn"));
 	RollTimelineFinish.BindUFunction(this, FName("OnTimelineRollFinished"));
+
+	InterpolationRecoil.BindUFunction(this, FName("TimelineRecoilFloatReturn"));
+	RecoilTimelineFinish.BindUFunction(this, FName("OnTimelineRecoilFinished"));
 
 	bIsReloading = false;
 	bIsRolling = false;
@@ -44,10 +48,16 @@ void ATA_Player::BeginPlay()
 		AnimInstance = GetMesh()->GetAnimInstance();
 	}
 
-	if (fCurve)
+	if (FRollingCurve)
 	{	
-		RollTimeline->AddInterpFloat(fCurve, InterpolationRoll, FName("Alpha"));
+		RollTimeline->AddInterpFloat(FRollingCurve, InterpolationRoll, FName("Alpha"));
 		RollTimeline->SetTimelineFinishedFunc(RollTimelineFinish);
+	}
+
+	if (FRecoilCurve)
+	{	
+		RecoilTimeLine->AddInterpFloat(FRecoilCurve, InterpolationRecoil, FName("Alpha"));
+		RecoilTimeLine->SetTimelineFinishedFunc(RecoilTimelineFinish);
 	}
 }
 
@@ -86,12 +96,15 @@ void ATA_Player::UnEquipWeapon()
 	}
 }
 
-void ATA_Player::OnWeaponAction(int32 CurrentBullets, float RecoilPercentage)
+void ATA_Player::OnWeaponRangeAction(int32 CurrentBullets, float RecoilPercentage)
 {
 	SetAnimateRangeWeapon(true);
 	OnWeaponShootDelegate.Broadcast(CurrentBullets);
-	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed * RecoilPercentage;
-	GetWorld()->GetTimerManager().SetTimer(TimeHandle_RecoilWeapon, this, &ATA_Player::RecoverPlayerMovement, RecoilTime, false);
+	RecoilWalkSpeed = DefaultWalkSpeed * RecoilPercentage;
+	GetCharacterMovement()->MaxWalkSpeed = RecoilWalkSpeed;
+	RecoilTimeLine->SetLooping(false);
+	RecoilTimeLine->SetIgnoreTimeDilation(true);
+	RecoilTimeLine->PlayFromStart();
 }
 
 void ATA_Player::StartAction()
@@ -220,10 +233,10 @@ UTA_ItemBullet* ATA_Player::GetBulletByType(ETA_BulletType BulletType)
 	return BulletSelected;
 }
 
-void ATA_Player::TimelineRollFloatReturn(float value)
+void ATA_Player::TimelineRollFloatReturn(float Value)
 {
 	GetCapsuleComponent()->SetRelativeLocationAndRotation(
-		FMath::Lerp(CurrentRollPosition, CurrentRollPosition + DestinationRollPosition, value),
+		FMath::Lerp(CurrentRollPosition, CurrentRollPosition + DestinationRollPosition, Value),
 		GetCapsuleComponent()->GetComponentRotation(), true);
 }
 
@@ -232,4 +245,17 @@ void ATA_Player::OnTimelineRollFinished()
 	bIsRolling = false;
 	RollTimeline->Stop();
 	RecoverPlayerMovement();
+}
+
+void ATA_Player::TimelineRecoilFloatReturn(float Value)
+{
+	GetCharacterMovement()->MaxWalkSpeed = FMath::FInterpTo(
+		RecoilWalkSpeed, DefaultWalkSpeed, Value, 1.0f);
+
+	UE_LOG(LogTemp, Warning, TEXT("Movement1: %f, Value1: %f"), GetCharacterMovement()->MaxWalkSpeed, Value);
+}
+
+void ATA_Player::OnTimelineRecoilFinished()
+{
+	
 }

@@ -37,6 +37,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
 	float DefaultWalkSpeed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fight|Speed")
+	float RecoilWalkSpeed;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon|Animation")
 	bool bAnimateRangeWeapon;
 
@@ -44,7 +47,10 @@ protected:
 	class UAnimMontage* RollMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Timeline")
-	class UCurveFloat* fCurve;
+	class UCurveFloat* FRollingCurve;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon|Range")
+	class UCurveFloat* FRecoilCurve;
 
 	class UAnimInstance* AnimInstance;
 
@@ -58,14 +64,9 @@ protected:
 	float RollSpeed;
 
 	FTimerHandle TimeHandle_Reload;
-	
-	FTimerHandle TimeHandle_RecoilWeapon;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
 	TArray<class UTA_ItemInventory*> InventoryData;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapon|Range", meta=(ClampMin=0.0f, ClampMax=1.0f))
-	float RecoilTime;
 	
 public:
 
@@ -77,7 +78,7 @@ public:
 
 	void OnReloadComplete();
 	
-	void OnWeaponAction(int32 CurrentBullets, float RecoilPercentage);
+	void OnWeaponRangeAction(int32 CurrentBullets, float RecoilPercentage);
 
 	void StartAction();
 
@@ -112,18 +113,26 @@ public:
 	
 private:
 	class UTimelineComponent* RollTimeline;
+	class UTimelineComponent* RecoilTimeLine;
 
 	FOnTimelineFloat InterpolationRoll{};
+	FOnTimelineFloat InterpolationRecoil{};
 
 	FOnTimelineEvent RollTimelineFinish{};
+	FOnTimelineEvent RecoilTimelineFinish{};
 
 	FVector CurrentRollPosition;
-
 	FVector DestinationRollPosition;
 
 	UFUNCTION()
-	void TimelineRollFloatReturn(float value);
+	void TimelineRollFloatReturn(float Value);
+	
+	UFUNCTION()
+	void TimelineRecoilFloatReturn(float Value);
 
 	UFUNCTION()
 	void OnTimelineRollFinished();
+
+	UFUNCTION()
+	void OnTimelineRecoilFinished();
 };

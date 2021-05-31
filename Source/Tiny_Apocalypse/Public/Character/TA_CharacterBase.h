@@ -27,16 +27,20 @@ protected:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	float BaseTurnRate;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UTA_HealthComponent* HealthComponent;
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
 	void MoveForward(float Value);
-
 	void MoveRight(float Value);
 	
 public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable, Category="Components")
+	UTA_HealthComponent* GetHealthComponent() { return HealthComponent; };
 };

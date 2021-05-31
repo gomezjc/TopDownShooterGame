@@ -2,8 +2,8 @@
 
 
 #include "Character/TA_CharacterBase.h"
+#include "Character/TA_HealthComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Weapon/TA_WeaponRangeBase.h"
 
 // Sets default values
 ATA_CharacterBase::ATA_CharacterBase()
@@ -22,6 +22,8 @@ ATA_CharacterBase::ATA_CharacterBase()
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
+
+	HealthComponent = CreateDefaultSubobject<UTA_HealthComponent>(TEXT("HealthComponent"));
 
 	bIsAttacking = false;
 }

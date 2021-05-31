@@ -25,6 +25,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="Setup")
 	class ATA_Player* PlayerCharacter;
 
+	UPROPERTY(BlueprintReadOnly, Category="Setup")
+	float MaxHealth = 0;
+	
 	UFUNCTION()
 	void UpdateWeapon(class ATA_WeaponBase* WeaponSelected);
 
@@ -33,7 +36,9 @@ protected:
 
 	UFUNCTION()
 	void UnEquipWeapon(class ATA_WeaponBase* WeaponSelected);
-	
+
+	UFUNCTION()
+	void OnHealthChange(float Value);
 public:
 	UFUNCTION(BlueprintCallable, Category="Setup")
 	void InitializeWidget();

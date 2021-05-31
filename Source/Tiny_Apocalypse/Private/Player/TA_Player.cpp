@@ -251,8 +251,6 @@ void ATA_Player::TimelineRecoilFloatReturn(float Value)
 {
 	GetCharacterMovement()->MaxWalkSpeed = FMath::FInterpTo(
 		RecoilWalkSpeed, DefaultWalkSpeed, Value, 1.0f);
-
-	UE_LOG(LogTemp, Warning, TEXT("Movement1: %f, Value1: %f"), GetCharacterMovement()->MaxWalkSpeed, Value);
 }
 
 void ATA_Player::OnTimelineRecoilFinished()

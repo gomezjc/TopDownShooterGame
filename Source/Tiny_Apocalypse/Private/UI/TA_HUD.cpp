@@ -2,6 +2,7 @@
 
 
 #include "UI/TA_HUD.h"
+#include "Character/TA_HealthComponent.h"
 #include "Inventory/TA_ItemBullet.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/TA_Player.h"
@@ -19,6 +20,13 @@ void UTA_HUD::InitializeWidget()
 			PlayerCharacter = Player;
 			Player->OnWeaponChangeDelegate.AddDynamic(this, &UTA_HUD::UpdateWeapon);
 			Player->OnWeaponShootDelegate.AddDynamic(this, &UTA_HUD::UpdateBullets);
+			UTA_HealthComponent* HealthComponent = Player->GetHealthComponent();
+
+			if (IsValid(HealthComponent))
+			{
+				MaxHealth = HealthComponent->MaxHealth;
+				HealthComponent->OnHealthChangeDelegate.AddDynamic(this, &UTA_HUD::OnHealthChange);
+			}
 		}
 	}
 }
@@ -50,4 +58,9 @@ void UTA_HUD::UpdateBullets(int32 CurrentBullets)
 
 void UTA_HUD::UnEquipWeapon(ATA_WeaponBase* WeaponSelected)
 {
+}
+
+void UTA_HUD::OnHealthChange(float Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("HealthChange %f / %f"), Value, MaxHealth);
 }

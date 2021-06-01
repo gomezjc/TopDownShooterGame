@@ -9,6 +9,7 @@
 #include "Weapon/TA_WeaponRangeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
+#include "Character/TA_HealthComponent.h"
 #include "Inventory/TA_ItemBullet.h"
 #include "Math/Vector.h"
 
@@ -59,6 +60,8 @@ void ATA_Player::BeginPlay()
 		RecoilTimeLine->AddInterpFloat(FRecoilCurve, InterpolationRecoil, FName("Alpha"));
 		RecoilTimeLine->SetTimelineFinishedFunc(RecoilTimelineFinish);
 	}
+
+	GetWorld()->GetTimerManager().SetTimer(TimeHandle_InitializeHealth, this, &ATA_Player::UpdateInitialHealth, 0.2f, false);
 }
 
 void ATA_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -256,4 +259,9 @@ void ATA_Player::TimelineRecoilFloatReturn(float Value)
 void ATA_Player::OnTimelineRecoilFinished()
 {
 	
+}
+
+void ATA_Player::UpdateInitialHealth()
+{
+	HealthComponent->OnHealthChangeDelegate.Broadcast(HealthComponent->GetCurrentHealth());
 }

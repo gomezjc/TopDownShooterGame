@@ -29,9 +29,11 @@ void UTA_HealthComponent::OnOwnerTakenDamage(AActor* DamagedActor, float Damage,
 	CurrentHealth = FMath::Clamp<float>(CurrentHealth - Damage, 0.0f, MaxHealth);
 	OnHealthChangeDelegate.Broadcast(CurrentHealth);
 
+	UE_LOG(LogTemp, Warning, TEXT("Health Change"), CurrentHealth, MaxHealth);
 	if(IsDead())
 	{
 		OnDiedDelegate.Broadcast();
+		UE_LOG(LogTemp, Warning, TEXT("Die"));
 	}
 }
 

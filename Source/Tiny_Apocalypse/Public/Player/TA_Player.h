@@ -64,6 +64,7 @@ protected:
 	float RollSpeed;
 
 	FTimerHandle TimeHandle_Reload;
+	FTimerHandle TimeHandle_InitializeHealth;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
 	TArray<class UTA_ItemInventory*> InventoryData;
@@ -135,4 +136,7 @@ private:
 
 	UFUNCTION()
 	void OnTimelineRecoilFinished();
+
+	UFUNCTION()
+	void UpdateInitialHealth();
 };

@@ -60,7 +60,8 @@ void UTA_HUD::UnEquipWeapon(ATA_WeaponBase* WeaponSelected)
 {
 }
 
-void UTA_HUD::OnHealthChange(float Value)
+void UTA_HUD::OnHealthChange(float CurrentHealth)
 {
-	UE_LOG(LogTemp, Warning, TEXT("HealthChange %f / %f"), Value, MaxHealth);
+	HealthPercentage = CurrentHealth / MaxHealth;
+	HealthColor = FMath::Lerp(EmptyHealthColor, FullHealthColor, HealthPercentage);
 }

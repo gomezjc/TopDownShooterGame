@@ -27,6 +27,18 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category="Setup")
 	float MaxHealth = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category="Setup")
+	float HealthPercentage;
+
+	UPROPERTY(BlueprintReadOnly, Category="Setup")
+	FLinearColor HealthColor;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Setup")
+	FLinearColor FullHealthColor;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Setup")
+	FLinearColor EmptyHealthColor;
 	
 	UFUNCTION()
 	void UpdateWeapon(class ATA_WeaponBase* WeaponSelected);
@@ -38,7 +50,7 @@ protected:
 	void UnEquipWeapon(class ATA_WeaponBase* WeaponSelected);
 
 	UFUNCTION()
-	void OnHealthChange(float Value);
+	void OnHealthChange(float CurrentHealth);
 public:
 	UFUNCTION(BlueprintCallable, Category="Setup")
 	void InitializeWidget();

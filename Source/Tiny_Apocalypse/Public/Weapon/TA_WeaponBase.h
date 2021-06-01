@@ -24,6 +24,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	ETA_WeaponType WeaponType;
 
+	UPROPERTY(EditAnywhere, Category="Weapon")
+	float WeaponDamage = 0;
+
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	class USceneComponent* CustomRootComponent;
 
@@ -48,6 +51,9 @@ public:
 	virtual void OnWeaponEquipped();
 
 	virtual void OnWeaponUnEquipped();
+
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	float GetWeaponDamage() { return WeaponDamage; }
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_StartWeaponAction();

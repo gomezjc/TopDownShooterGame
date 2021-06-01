@@ -72,7 +72,7 @@ void ATA_WeaponRangeBase::FireRound()
 			UE_LOG(LogTemp, Warning, TEXT("HUD_WEAPON: ADD RANGE %d"), CurrentBullets);
 			BulletWeapon->SetMagazineWeapon(CurrentBullets);
 		}
-		AActor* BulletOwner = GetOwner() ? GetOwner() : this;
+		AActor* BulletOwner = this;
 		const FTransform SpawnTransform = MuzzleComponent->GetComponentTransform();
 		FActorSpawnParameters Params;
 		Params.Owner = BulletOwner;

@@ -13,5 +13,8 @@ UCLASS()
 class TINY_APOCALYPSE_API ATA_EnemyBase : public ATA_CharacterBase
 {
 	GENERATED_BODY()
+
+public:
+	ATA_EnemyBase();
 	
 };

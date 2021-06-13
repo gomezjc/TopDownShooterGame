@@ -57,7 +57,7 @@ void ATA_BulletBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor
 		Damage = WeaponBase->GetWeaponDamage();	
 	}
 	UGameplayStatics::ApplyDamage(OtherActor, Damage, nullptr, GetOwner(), UDamageType::StaticClass());
-	Destroy();
+	BP_OnHit();
 }
 
 
